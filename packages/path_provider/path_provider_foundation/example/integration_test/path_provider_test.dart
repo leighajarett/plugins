@@ -41,6 +41,15 @@ void main() {
     // validate that a non-empty path was returned.
     expect(result, isNotEmpty);
   });
+
+  testWidgets('getContainerDirectory', (WidgetTester tester) async {
+    if (Platform.isIOS) {
+      final PathProviderPlatform provider = PathProviderPlatform.instance;
+      final String? result = await provider.getContainerPath(
+          appGroupIdentifier: 'group.flutter.appGroupTest');
+      _verifySampleFile(result, 'appGroup');
+    }
+  });
 }
 
 /// Verify a file called [name] in [directoryPath] by recreating it with test

@@ -26,6 +26,7 @@ enum DirectoryType: Int {
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol PathProviderApi {
   func getDirectoryPath(type: DirectoryType) -> String?
+  func getContainerPath(appGroupIdentifier: String) -> String?
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -44,6 +45,18 @@ class PathProviderApiSetup {
     } else {
       getDirectoryPathChannel.setMessageHandler(nil)
     }
+      
+  let getContainerPathChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.PathProviderApi.getContainerPath", binaryMessenger: binaryMessenger)
+  if let api = api {
+      getContainerPathChannel.setMessageHandler { message, reply in
+      let args = message as! [Any?]
+      let appGroupIdArg = args[0] as! String
+      let result = api.getContainerPath(appGroupIdentifier: appGroupIdArg)
+      reply(wrapResult(result))
+    }
+  } else {
+    getDirectoryPathChannel.setMessageHandler(nil)
+  }
   }
 }
 

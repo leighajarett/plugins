@@ -1,5 +1,6 @@
-## NEXT
+## 2.1.0
 
+* Adds support for `getContainerDirectory` on iOS.
 * Updates minimum Flutter version to 3.0.
 
 ## 2.0.5

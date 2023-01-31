@@ -204,3 +204,19 @@ Future<Directory?> getDownloadsDirectory() async {
   }
   return Directory(path);
 }
+
+/// Path to the directory of the App Group container that is specified.
+///
+/// Throws an [UnsupportedError] if this is not supported on the current
+/// platform.
+Future<Directory?> getContainerDirectory({
+  /// Required parameter that specifies the string identifier for the App Group.
+  required String appGroupIdentifier,
+}) async {
+  final String? path =
+      await _platform.getContainerPath(appGroupIdentifier: appGroupIdentifier);
+  if (path == null) {
+    return null;
+  }
+  return Directory(path);
+}

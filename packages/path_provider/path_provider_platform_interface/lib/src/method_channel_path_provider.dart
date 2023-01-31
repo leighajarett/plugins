@@ -89,4 +89,15 @@ class MethodChannelPathProvider extends PathProviderPlatform {
     }
     return methodChannel.invokeMethod<String>('getDownloadsDirectory');
   }
+
+  @override
+  Future<String?> getContainerPath({required String appGroupIdentifier}) {
+    if (!_platform.isIOS) {
+      throw UnsupportedError('Functionality only available on iOS/');
+    }
+    return methodChannel.invokeMethod<String>(
+      'getContainerDirectory',
+      <String, String>{'appGroupIdentifier': appGroupIdentifier},
+    );
+  }
 }

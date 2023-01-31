@@ -16,6 +16,7 @@ const String kLibraryPath = 'libraryPath';
 const String kApplicationDocumentsPath = 'applicationDocumentsPath';
 const String kExternalCachePath = 'externalCachePath';
 const String kExternalStoragePath = 'externalStoragePath';
+const String kContainerPath = 'containerPath';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -65,6 +66,12 @@ void main() {
       final Directory? result = await getDownloadsDirectory();
       expect(result?.path, kDownloadsPath);
     });
+
+    test('geContainerDirectory', () async {
+      final Directory? result = await getContainerDirectory(
+          appGroupIdentifier: 'group.flutter.appGroupTest');
+      expect(result?.path, kContainerPath);
+    });
   });
 
   group('PathProvider null implementation', () {
@@ -109,6 +116,12 @@ void main() {
 
     test('getDownloadsDirectory passses null through', () async {
       final Directory? result = await getDownloadsDirectory();
+      expect(result, isNull);
+    });
+
+    test('geContainerDirectory passses null through', () async {
+      final Directory? result = await getContainerDirectory(
+          appGroupIdentifier: 'group.flutter.appGroupTest');
       expect(result, isNull);
     });
   });
@@ -158,6 +171,11 @@ class FakePathProviderPlatform extends Fake
   Future<String?> getDownloadsPath() async {
     return kDownloadsPath;
   }
+
+  @override
+  Future<String?> getContainerPath({required String appGroupIdentifier}) async {
+    return kContainerPath;
+  }
 }
 
 class AllNullFakePathProviderPlatform extends Fake
@@ -202,6 +220,11 @@ class AllNullFakePathProviderPlatform extends Fake
 
   @override
   Future<String?> getDownloadsPath() async {
+    return null;
+  }
+
+  @override
+  Future<String?> getContainerPath({required String appGroupIdentifier}) async {
     return null;
   }
 }

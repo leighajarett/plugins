@@ -17,6 +17,7 @@ void main() {
   const String kExternalCachePaths = 'externalCachePaths';
   const String kExternalStoragePaths = 'externalStoragePaths';
   const String kDownloadsPath = 'downloadsPath';
+  const String kContainerPath = 'containerPath';
 
   group('$MethodChannelPathProvider', () {
     late MethodChannelPathProvider methodChannelPathProvider;
@@ -43,6 +44,8 @@ void main() {
             return <String>[kExternalCachePaths];
           case 'getDownloadsDirectory':
             return kDownloadsPath;
+          case 'getContainerDirectory':
+            return kContainerPath;
           default:
             return null;
         }
@@ -110,6 +113,46 @@ void main() {
         <Matcher>[isMethodCall('getLibraryDirectory', arguments: null)],
       );
       expect(path, kLibraryPath);
+    });
+
+    test('getContainerPath android fails', () async {
+      try {
+        await methodChannelPathProvider.getContainerPath(
+            appGroupIdentifier: 'group.example.test');
+        fail('should throw UnsupportedError');
+      } catch (e) {
+        expect(e, isUnsupportedError);
+      }
+    });
+
+    test('getContainerPath iOS succeeds', () async {
+      methodChannelPathProvider
+          .setMockPathProviderPlatform(FakePlatform(operatingSystem: 'ios'));
+
+      const String appGroupIdentifier = 'group.example.test';
+      final String? path = await methodChannelPathProvider.getContainerPath(
+          appGroupIdentifier: appGroupIdentifier);
+      expect(
+        log,
+        <Matcher>[
+          isMethodCall('getContainerDirectory', arguments: <String, String>{
+            'appGroupIdentifier': appGroupIdentifier
+          })
+        ],
+      );
+      expect(path, kContainerPath);
+    });
+
+    test('getContainerPath macOS fails', () async {
+      methodChannelPathProvider
+          .setMockPathProviderPlatform(FakePlatform(operatingSystem: 'macos'));
+      try {
+        await methodChannelPathProvider.getContainerPath(
+            appGroupIdentifier: 'group.example.test');
+        fail('should throw UnsupportedError');
+      } catch (e) {
+        expect(e, isUnsupportedError);
+      }
     });
 
     test('getApplicationDocumentsPath', () async {

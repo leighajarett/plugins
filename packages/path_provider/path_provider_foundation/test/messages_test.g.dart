@@ -17,17 +17,19 @@ abstract class TestPathProviderApi {
   static const MessageCodec<Object?> codec = StandardMessageCodec();
 
   String? getDirectoryPath(DirectoryType type);
+  String? getContainerPath(String appGroupId);
 
   static void setup(TestPathProviderApi? api,
       {BinaryMessenger? binaryMessenger}) {
     {
-      final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.PathProviderApi.getDirectoryPath', codec,
-          binaryMessenger: binaryMessenger);
+      final BasicMessageChannel<Object?> directoryChannel =
+          BasicMessageChannel<Object?>(
+              'dev.flutter.pigeon.PathProviderApi.getDirectoryPath', codec,
+              binaryMessenger: binaryMessenger);
       if (api == null) {
-        channel.setMockMessageHandler(null);
+        directoryChannel.setMockMessageHandler(null);
       } else {
-        channel.setMockMessageHandler((Object? message) async {
+        directoryChannel.setMockMessageHandler((Object? message) async {
           assert(message != null,
               'Argument for dev.flutter.pigeon.PathProviderApi.getDirectoryPath was null.');
           final List<Object?> args = (message as List<Object?>?)!;
@@ -36,6 +38,26 @@ abstract class TestPathProviderApi {
           assert(arg_type != null,
               'Argument for dev.flutter.pigeon.PathProviderApi.getDirectoryPath was null, expected non-null DirectoryType.');
           final String? output = api.getDirectoryPath(arg_type!);
+          return <Object?>[output];
+        });
+      }
+
+      final BasicMessageChannel<Object?> containerChannel =
+          BasicMessageChannel<Object?>(
+              'dev.flutter.pigeon.PathProviderApi.getContainerPath', codec,
+              binaryMessenger: binaryMessenger);
+      if (api == null) {
+        containerChannel.setMockMessageHandler(null);
+      } else {
+        containerChannel.setMockMessageHandler((Object? message) async {
+          assert(message != null,
+              'Argument for dev.flutter.pigeon.PathProviderApi.getContainerPath was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final String? arg_appGroupId =
+              args[0] == null ? null : args[0] as String;
+          assert(arg_appGroupId != null,
+              'Argument for dev.flutter.pigeon.PathProviderApi.getContainerPath was null, expected non-null DirectoryType.');
+          final String? output = api.getContainerPath(arg_appGroupId!);
           return <Object?>[output];
         });
       }

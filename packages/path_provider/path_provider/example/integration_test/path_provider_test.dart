@@ -99,6 +99,18 @@ void main() {
       expect(result?.path, isNotEmpty);
     }
   });
+
+  testWidgets('getContainerDirectory', (WidgetTester tester) async {
+    if (!Platform.isIOS) {
+      final Future<Directory?> result = getContainerDirectory(
+          appGroupIdentifier: 'group.flutter.appGroupTest');
+      expect(result, throwsA(isInstanceOf<UnsupportedError>()));
+    } else {
+      final Directory? result = await getContainerDirectory(
+          appGroupIdentifier: 'group.flutter.appGroupTest');
+      _verifySampleFile(result, 'appGroup');
+    }
+  });
 }
 
 /// Verify a file called [name] in [directory] by recreating it with test

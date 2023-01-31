@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List<Directory>?>? _externalStorageDirectories;
   Future<List<Directory>?>? _externalCacheDirectories;
   Future<Directory?>? _downloadsDirectory;
+  Future<Directory?>? _containerDirectory;
 
   void _requestTempDirectory() {
     setState(() {
@@ -123,6 +124,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void _requestDownloadsDirectory() {
     setState(() {
       _downloadsDirectory = getDownloadsDirectory();
+    });
+  }
+
+  void _requestContainerDirectory() {
+    setState(() {
+      _containerDirectory = getContainerDirectory(
+          appGroupIdentifier: 'group.flutter.appGroupTest');
     });
   }
 
@@ -290,6 +298,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 FutureBuilder<Directory?>(
                   future: _downloadsDirectory,
+                  builder: _buildDirectory,
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: Platform.isMacOS || Platform.isIOS
+                        ? _requestContainerDirectory
+                        : null,
+                    child: Text(
+                      Platform.isMacOS || Platform.isIOS
+                          ? 'Get App Group Container Directory'
+                          : 'App Group Container directory is unavailable',
+                    ),
+                  ),
+                ),
+                FutureBuilder<Directory?>(
+                  future: _containerDirectory,
                   builder: _buildDirectory,
                 ),
               ],

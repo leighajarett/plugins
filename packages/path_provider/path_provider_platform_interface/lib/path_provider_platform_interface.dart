@@ -96,4 +96,9 @@ abstract class PathProviderPlatform extends PlatformInterface {
   Future<String?> getDownloadsPath() {
     throw UnimplementedError('getDownloadsPath() has not been implemented.');
   }
+
+  /// Path to the container directory for an App Group on iOS or macOS.
+  Future<String?> getContainerPath({required String appGroupIdentifier}) {
+    throw UnimplementedError('getContainerPath() has not been implemented.');
+  }
 }
