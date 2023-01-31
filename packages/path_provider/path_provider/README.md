@@ -21,6 +21,9 @@ String tempPath = tempDir.path;
 
 Directory appDocDir = await getApplicationDocumentsDirectory();
 String appDocPath = appDocDir.path;
+
+Directory appDocDir = await getContainerDirectory(appGroupIdentifier: 'group.example.myAppGroup');
+String appDocPath = appDocDir.path;
 ```
 
 ## Supported platforms and paths
@@ -37,6 +40,7 @@ Directories support by platform:
 | External Cache Directories | ✔️ | ❌ | ❌ | ❌️ | ❌️ |
 | External Storage Directories | ✔️ | ❌ | ❌ | ❌️ | ❌️ |
 | Downloads | ❌ | ✔️ | ✔️ | ✔️ | ✔️ |
+| App Group Container | ❌ | ✔️ | ❌ | ❌ | ❌ |
 
 ## Testing
 
