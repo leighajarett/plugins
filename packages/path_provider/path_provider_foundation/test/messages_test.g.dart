@@ -56,7 +56,7 @@ abstract class TestPathProviderApi {
           final String? arg_appGroupId =
               args[0] == null ? null : args[0] as String;
           assert(arg_appGroupId != null,
-              'Argument for dev.flutter.pigeon.PathProviderApi.getContainerPath was null, expected non-null DirectoryType.');
+              'Argument for dev.flutter.pigeon.PathProviderApi.getContainerPath was null, expected non-null String type.');
           final String? output = api.getContainerPath(arg_appGroupId!);
           return <Object?>[output];
         });

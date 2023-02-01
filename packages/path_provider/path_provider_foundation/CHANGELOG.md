@@ -1,6 +1,6 @@
 ## 2.2.0
 
-* Adds support for `getContainerDirectory` on iOS.
+* Adds support for `getContainerPath` on iOS.
 * Updates minimum supported Flutter version to 3.0.
 
 ## 2.1.1
